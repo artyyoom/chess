@@ -12,18 +12,18 @@ public class BoardConsoleRenderer {
 
     public void render(Board board){
         for (int rank = 8; rank >= 1; rank--) {
-            String line = "";
+            StringBuilder line = new StringBuilder();
             for (File file : File.values()) {
                 Coordinates coordinates = new Coordinates(file, rank);
                 if (board.isSquareEmpty(coordinates)) {
-                    line += getSpringForEmptySquare(coordinates);
+                    line.append(getSpringForEmptySquare(coordinates));
                 }
                 else {
-                    line += getPieceSprite(board.getPiece(coordinates));
+                    line.append(getPieceSprite(board.getPiece(coordinates)));
                 }
             }
 
-            line += ANSI_RESET;
+            line.append(ANSI_RESET);
             System.out.println(line);
         }
     }
@@ -50,17 +50,23 @@ public class BoardConsoleRenderer {
     }
 
     private String getSpringForEmptySquare(Coordinates coordinates) {
-        return colorizeSprite("   ", Color.WHITE, Board.isSquareDark(coordinates));
+        return colorizeSprite("        ", Color.WHITE, Board.isSquareDark(coordinates));
     }
 
-//    private String selectUnicodeSpriteForPiece(Piece piece) {
-//        switch(piece.getClass().getSimpleName()) {
-//            case "Pawn":
-//                return "A"
-//        }
-//    }
+    private String selectUnicodeSpriteForPiece(Piece piece) {
+        return switch (piece.getClass().getSimpleName()) {
+            case "Pawn" -> "♙";
+            case "Knight" -> "♘";
+            case "Bishop" -> "♗";
+            case "Rook" -> "♖";
+            case "Queen" -> "♕";
+            case "King" -> "♔";
+            default -> "";
+        };
+
+    }
 
     private String getPieceSprite(Piece piece) {
-        return colorizeSprite(" A ", piece.color, Board.isSquareDark(piece.coordinates));
+        return colorizeSprite(" " + selectUnicodeSpriteForPiece(piece) + " ", piece.color, Board.isSquareDark(piece.coordinates));
     }
 }
