@@ -18,7 +18,7 @@ public class Game {
         boolean isWhiteToMove = true;
         while (true) {
             // render
-            renderer.render(board);
+            renderer.render(board,null);
 
             if (isWhiteToMove) {
                 System.out.println("White to move");
@@ -34,6 +34,7 @@ public class Game {
             Piece piece = board.getPiece(sourceCoordinates);
             Set<Coordinates> availableMoveSquares = piece.getAvailableMoveSquares(board);
 
+            renderer.render(board, piece);
             Coordinates targetCoordinates =  InputCoordinates.inputAvailableSquare(availableMoveSquares);
 
             // make move
