@@ -1,8 +1,10 @@
 package com.chess.piece;
 
+import com.chess.Board;
 import com.chess.Color;
 import com.chess.Coordinates;
 
+import java.util.HashSet;
 import java.util.Set;
 
 abstract public class Piece {
@@ -15,11 +17,24 @@ abstract public class Piece {
     }
 
 
-//    Set<Coordinates> getAvailableMoveSquares() {
-//        for (CoordinatesShift shift : getPieceMoves()) {
-//            
-//        }
-//    }
+    public Set<Coordinates> getAvailableMoveSquares(Board board) {
+        Set<Coordinates> result = new HashSet<>();
+        for (CoordinatesShift shift : getPieceMoves()) {
+            if (coordinates.canShift(shift)) {
+                Coordinates newCoordinates = coordinates.shift(shift);
+
+                if (isSquareAvailableForMove(newCoordinates, board)) {
+                    result.add(newCoordinates);
+                }
+            }
+        }
+
+        return result;
+    }
+
+     protected boolean isSquareAvailableForMove(Coordinates coordinates, Board board) {
+        return board.isSquareEmpty(coordinates) || board.getPiece(coordinates).color != color;
+    }
 
     protected abstract Set<CoordinatesShift> getPieceMoves();
 }
