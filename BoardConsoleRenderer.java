@@ -70,7 +70,7 @@ public class BoardConsoleRenderer {
     }
 
     private String getSpringForEmptySquare(Coordinates coordinates, boolean isHighlight) {
-        return colorizeSprite("        ", Color.WHITE,
+        return colorizeSprite("         ", Color.WHITE,
                 Board.isSquareDark(coordinates),isHighlight);
     }
 

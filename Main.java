@@ -10,7 +10,7 @@ public class Main {
 //        Board board = new Board();
 //        board.setupDefaultPiecePositions();
 
-        Board board = new BoardFactory().fromFEN("r2k4/8/2b2RN1/8/4BR2/r7/8/2RK4 w - - 0 1");
+        Board board = new BoardFactory().fromFEN("3k4/6r1/8/1P2Q3/2B5/6P1/2R1r3/3K4 w - - 0 1");
         //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 
         BoardConsoleRenderer renderer = new BoardConsoleRenderer();
