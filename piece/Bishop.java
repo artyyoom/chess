@@ -1,12 +1,8 @@
 package com.chess.piece;
 
-import com.chess.Board;
-import com.chess.BoardUtils;
 import com.chess.Color;
 import com.chess.Coordinates;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Bishop extends LongRangePiece implements IBishop {

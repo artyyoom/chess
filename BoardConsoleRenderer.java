@@ -1,8 +1,8 @@
 package com.chess;
 
+import com.chess.board.Board;
 import com.chess.piece.Piece;
 
-import javax.swing.text.Highlighter;
 import java.util.Set;
 
 import static java.util.Collections.emptySet;
@@ -70,7 +70,7 @@ public class BoardConsoleRenderer {
     }
 
     private String getSpringForEmptySquare(Coordinates coordinates, boolean isHighlight) {
-        return colorizeSprite("         ", Color.WHITE,
+        return colorizeSprite("        ", Color.WHITE,
                 Board.isSquareDark(coordinates),isHighlight);
     }
 

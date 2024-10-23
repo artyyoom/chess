@@ -1,8 +1,12 @@
 package com.chess;
 
-import com.chess.piece.Piece;
+import com.chess.board.Board;
+import com.chess.board.Move;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class Game {
 
@@ -10,38 +14,55 @@ public class Game {
 
     private BoardConsoleRenderer renderer = new BoardConsoleRenderer();
 
+    private final List<GameStateChecker> checkers = List.of(
+            new StalemateGameChecker(),
+            new CheckMateGameStateChecker()
+    );
+
     public Game(Board board) {
         this.board = board;
     }
 
     public void gameLoop() {
-        boolean isWhiteToMove = true;
-        while (true) {
-            // render
-            renderer.render(board,null);
 
-            if (isWhiteToMove) {
+        Color colorToMove = Color.WHITE;
+
+        GameState state = determineGameState(board, colorToMove);
+
+        while (state == GameState.ONGOING) {
+            // render
+            renderer.render(board);
+
+            if (colorToMove == Color.WHITE) {
                 System.out.println("White to move");
             } else {
                 System.out.println("Black to move");
             }
 
-            // input
-            Coordinates sourceCoordinates = InputCoordinates.inputPieceCoordinatesForColor(
-                    isWhiteToMove ? Color.WHITE : Color.BLACK, board
-            );
-
-            Piece piece = board.getPiece(sourceCoordinates);
-            Set<Coordinates> availableMoveSquares = piece.getAvailableMoveSquares(board);
-
-            renderer.render(board, piece);
-            Coordinates targetCoordinates =  InputCoordinates.inputAvailableSquare(availableMoveSquares);
+            Move move =  InputCoordinates.inputMove(board, colorToMove, renderer);
 
             // make move
-            board.movePiece(sourceCoordinates, targetCoordinates);
+            board.makeMove(move);
 
             // pass move
-            isWhiteToMove =! isWhiteToMove;
+            colorToMove = colorToMove.opposite();
+
+            state = determineGameState(board, colorToMove);
         }
+
+        renderer.render(board);
+        System.out.println("Game ended with state " + state);
+    }
+
+    private GameState determineGameState(Board board, Color color) {
+        for (GameStateChecker checker : checkers) {
+            GameState state = checker.check(board, color);
+
+            if (state != GameState.ONGOING) {
+                return state;
+            }
+        }
+
+        return GameState.ONGOING;
     }
 }

@@ -1,7 +1,7 @@
 package com.chess.piece;
 
-import com.chess.Board;
-import com.chess.BoardUtils;
+import com.chess.board.Board;
+import com.chess.board.BoardUtils;
 import com.chess.Color;
 import com.chess.Coordinates;
 
